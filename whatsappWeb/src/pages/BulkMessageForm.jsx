@@ -26,7 +26,7 @@ export default function BulkMessageForm({ sessionId, accessToken }) {
           if (!number) continue;
 
           try {
-            const url = new URL('http://localhost:3000/api/send');
+            const url = new URL(`${import.meta.env.VITE_BASE_URL}/api/send`);
             url.searchParams.append('number', number);
             url.searchParams.append('message', bulkMessage.trim());
             url.searchParams.append('instance_id', sessionId);

@@ -37,7 +37,7 @@ export default function SessionManager({
   const checkUserConnection = async () => {
     if (!sessionId) return;
     try {
-      const res = await fetch(`http://localhost:3000/user-details/${sessionId}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/user-details/${sessionId}`);
       if (res.ok) {
         const user = await res.json();
         setUserData(user);
@@ -67,8 +67,10 @@ export default function SessionManager({
     setStatus('idle');
 
     try {
-      const sessionRes = await fetch('http://localhost:3000/create-session', { method: 'POST' });
+      const sessionRes = await fetch(`${import.meta.env.VITE_API_URL}/create-session`, { method: 'POST' });
       const sessionData = await sessionRes.json();
+
+      console.log(sessionData); 
 
       if (!sessionData.sessionId || !sessionData.accessToken) {
         setLoading(false);
@@ -78,7 +80,7 @@ export default function SessionManager({
       setSessionId(sessionData.sessionId);
       setAccessToken(sessionData.accessToken);
 
-      const qrRes = await fetch(`http://localhost:3000/generate-qrcode/${sessionData.sessionId}`);
+      const qrRes = await fetch(`${import.meta.env.VITE_API_URL}/generate-qrcode/${sessionData.sessionId}`);
       const qrData = await qrRes.json();
 
       if (qrData.qrCode) {
@@ -86,7 +88,7 @@ export default function SessionManager({
         setWaitingForScan(true);
 
         const interval = setInterval(async () => {
-          const userRes = await fetch(`http://localhost:3000/user-details/${sessionData.sessionId}`);
+          const userRes = await fetch(`${import.meta.env.VITE_API_URL}/user-details/${sessionData.sessionId}`);
           if (userRes.ok) {
             const user = await userRes.json();
             setUserData(user);

@@ -3,7 +3,7 @@ import React from 'react';
 export default function PublicApiInfo({ userData, sessionId, accessToken }) {
   if (!userData) return null;
 
-  const apiUrl = 'http://localhost:3000/api/send';
+  const apiUrl = `${import.meta.env.VITE_API_URL}/api/send`;
   const payload = {
     number: '919876543210',
     type: 'text',
